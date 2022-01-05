@@ -1,4 +1,4 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // create a 'Global' initial state. An object we want to have access to throughout the entire application
 
@@ -32,9 +32,21 @@ const grocerySlice = createSlice({
             if(state.budget - 5 >= 0){
                 state.budget = state.budget - 5;
             }            
+        },
+
+        addProductToList(state, action:PayloadAction<Product>){
+            // write your logic as if it was mutable
+            const product: Product = action.payload;
+            state.products.push(product);
+
+        },
+        setProductComplete(state, action: PayloadAction<string>){
+            const desc: string = action.payload; 
+            state.products.find(p => p.desc === desc).isBought = true;
         }
     }
 });
 
 
 export const groceryStore = configureStore({reducer:grocerySlice.reducer})
+export const actions = grocerySlice.actions;
